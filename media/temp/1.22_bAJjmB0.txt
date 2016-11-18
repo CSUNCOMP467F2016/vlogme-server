@@ -1,0 +1,11 @@
+Since the objects in the groups $$n_{i}$$ are identical, any  group can be placed in n distinct locations in $$C(n,n_{i})$$ ways. For example group can be placen in $$\binom{n}{n_{1}}$$, then group $$n_{2}$$ can be placed in $$\binom{n-n_{1}}{n_{2}}$$ ways  $$\binom{k}{k} = 1$$
+
+ The number of ways all i groups can be placed in r=k, where k is a number of elements in all i groups positions:
+
+$$\binom{n}{n_{1}}*\binom{n-n_{1}}{n_{2}}*...*\binom{k}{k}$$=
+
+=$$\frac{n!}{n_{1}!*(n-n_{1})!}*\frac{(n-n_{1})!}{n_{2}!*(n-n_{1}-n_{2})!}$$=
+
+=$$\frac{n!}{n_{1}!n_{2}!n_{3}!..1!}$$
+
+if $$n_{1}=n_{2}=...n_{k}=1$$ then C(n,k)=P(n,k)

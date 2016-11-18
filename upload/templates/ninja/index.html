@@ -1,0 +1,24 @@
+{% extends "ninja/base.html" %}
+
+{% block title %}
+    Index
+{% endblock %}
+{% block content %}
+{% if request.user.is_authenticated %}
+    {% if days_list %}
+        <p>Showing sections only for the following days:
+        {% for day in days_list %}
+            {{ day }},
+        {% endfor %}
+        </p>
+    {% else %}
+        <p>Change the filter settings, currently you have no available days</p>
+    {% endif %}
+{% else %}
+
+<p>Your are not authenticated</p>
+
+{% endif %}
+
+
+{% endblock %}
