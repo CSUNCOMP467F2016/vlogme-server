@@ -57,4 +57,4 @@ def transcode_on_boto3(input_key):
         ],
     )
     print(response)
-    return output_key, playlist_name, output_key+'_0001.png'
+    return output_key, playlist_name+'.mpd', output_key+'_00001.png'

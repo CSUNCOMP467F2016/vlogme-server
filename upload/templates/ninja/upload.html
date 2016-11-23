@@ -12,16 +12,37 @@
     {% endif %}
 
 
+
+
+
 <form action="{% url 'index' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
+
+    <p>
+    Title: <input type="text" name =  "video_title">
+    </p>
+    <p>
+    Response to:
+    <select name="response_to">
+        <option value = 1 selected>NOT a RESPONSE</option>
+    {% for topic_video in all_topic_videos %}
+        <option value="{{ topic_video.id }}">{{ topic_video.title }} </option>
+    {% endfor %}
+    </select>
+    </p>
+
+    <p>Response start time <input type="number" name ='playback_starts_at'> (live blank or ZERO for a topic video)</p>
+
+
             <p>{{ form.non_field_errors }}</p>
             <p>{{ form.docfile.label_tag }} {{ form.docfile.help_text }}</p>
             <p>
                 {{ form.docfile.errors }}
                 {{ form.docfile }}
             </p>
+
             <p><input type="submit" value="Upload" /></p>
-        </form>
+</form>
 
 
 {% endblock %}

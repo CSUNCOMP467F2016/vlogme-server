@@ -33,15 +33,20 @@ def index(request):
             output_filename, playlist_filename, thumbnail_name = transcode_on_boto3(filename)
 
             original_bucket_url ='https://s3-us-west-2.amazonaws.com/comp467originals/'
-            transcoder_bucket_url = 'https://s3-us-west-2.amazonaws.com/comp467lq/lower_quality_dash/'
+            transcoder_bucket_url = 'https://s3-us-west-2.amazonaws.com/comp467lq/'
+            thumbnail_bucket_url = 'https://s3-us-west-2.amazonaws.com/comp467thumbnails/'
 
-            TITLE = "placeholder for now"
+            parent_video = VideoResponse.objects.get(id=request.POST.get('response_to'))
+
             metadata = VideoResponse(author=request.user,
-                                     title=TITLE,
                                      filename=transcoder_bucket_url+output_filename,
                                      playlist_file= transcoder_bucket_url + playlist_filename,
-                                     thumbnail=thumbnail_name,
+                                     thumbnail=thumbnail_bucket_url+thumbnail_name,
                                      original_filename =original_bucket_url+ filename,
+                                     response_to = parent_video,
+                                     playback_start_at=request.POST.get('playback_starts_at'),
+                                     title = request.POST.get('video_title'),
+
                                      )
             metadata.save()
 
@@ -54,9 +59,11 @@ def index(request):
     # Load documents for the list page
     documents = ResponseFile.objects.all()
     users = User.objects.all()
+    all_topic_videos = VideoResponse.objects.filter(response_to__id=1)
     # Render list page with the documents and the form
     return render(request, "ninja/upload.html", {'documents': documents,
                                                  'users':users,
+                                                 'all_topic_videos':all_topic_videos,
                                                  'form': form} )
 
 
@@ -95,6 +102,11 @@ def user_logout(request):
 
 
 def user_sign_up(request):
+
+    # temporarily disables SignUp
+    # to limit abuse  of the Transcoder
+    return render(request, 'ninja/disabled.html')
+
 
     def user_exists(username):
         return User.objects.filter(username=username).exists()
