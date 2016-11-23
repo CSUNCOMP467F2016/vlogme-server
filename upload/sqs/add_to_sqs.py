@@ -17,4 +17,4 @@ def add_video_file_for_encoding(bucket_name, file_name, author):
             })
     print(response)
 
-add_video_file_for_encoding('buk1', 'fil1', 'auth1')
+# add_video_file_for_encoding('buk1', 'fil1', 'auth1')

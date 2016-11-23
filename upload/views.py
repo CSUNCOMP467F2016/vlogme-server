@@ -11,7 +11,8 @@ from .models import User,ResponseFile
 
 from .s3.s3 import upload_original_to_s3
 from .sqs.add_to_sqs import add_video_file_for_encoding
-from .transcoder.create_job import set_transcoder_job
+from .transcoder.create_job import  transcode_on_boto3
+from endpoint.models import VideoResponse
 
 @login_required
 def index(request):
@@ -29,7 +30,23 @@ def index(request):
             # sqs, dont do much yet
             add_video_file_for_encoding(bucket_name, filename, request.user.username)
             # instead, we create transcoder job here
-            set_transcoder_job(filename)
+            output_filename, playlist_filename, thumbnail_name = transcode_on_boto3(filename)
+
+            original_bucket_url ='https://s3-us-west-2.amazonaws.com/comp467originals/'
+            transcoder_bucket_url = 'https://s3-us-west-2.amazonaws.com/comp467lq/lower_quality_dash/'
+
+            TITLE = "placeholder for now"
+            metadata = VideoResponse(author=request.user,
+                                     title=TITLE,
+                                     filename=transcoder_bucket_url+output_filename,
+                                     playlist_file= transcoder_bucket_url + playlist_filename,
+                                     thumbnail=thumbnail_name,
+                                     original_filename =original_bucket_url+ filename,
+                                     )
+            metadata.save()
+
+
+
             return HttpResponseRedirect(reverse('index'))
     else:
         form = VideoResponseForm() # A empty, unbound form
