@@ -105,7 +105,7 @@ def user_sign_up(request):
 
     # temporarily disables SignUp
     # to limit abuse  of the Transcoder
-    return render(request, 'ninja/disabled.html')
+    # return render(request, 'ninja/disabled.html')
 
 
     def user_exists(username):
