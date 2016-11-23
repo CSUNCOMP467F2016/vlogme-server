@@ -40,7 +40,7 @@
                 {{ form.docfile.errors }}
                 {{ form.docfile }}
             </p>
-
+            <p style ="color :red">Output time is limited to 59 seconds. We are using a paid service for transcoding so please be nice</p>
             <p><input type="submit" value="Upload" /></p>
 </form>
 
@@ -66,7 +66,7 @@ pk\": 3, <b>i.e video_id </b>
     <li>\"title\": \"Funny video!\",
     <li>\"filename\": \"https://s3-us-west-2.amazonaws.com/comp467lq/106jyelloz_1479938463.mp4_dash\",<b>URL of a compressed file</b>
     <li>\"thumbnail\": \"https://s3-us-west-2.amazonaws.com/comp467thumbnails/106jyelloz_1479938463.mp4_dash_00001.png\", <b>URL of a thumbnail</b>
-    <li>\"playlist_file\": \"https://s3-us-west-2.amazonaws.com/comp467lq/106playlist_jyelloz_1479938463.mp4.mpd\", <b>URL a manifest file</b>
+    <li>\"playlist_file\": \"https://s3-us-west-2.amazonaws.com/comp467lq/106playlist_jyelloz_1479938463.mp4.mpd\", <b>URL of a manifest file</b>
     <li>\"response_to\": 1, <b>id of the parent video, if the id == 1 then there is no parent</b>
     <li>\"playback_start_at\": 0, <b>time in sec when the playback should start, only relevant for response videos</b>
     <li>\"length\": \"\", <b>length in seconds, optional</b>
