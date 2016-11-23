@@ -1,5 +1,8 @@
 db.sqlite3
-.idea/*
-templates/
+upload/migrations
+endpoint/migrations
+.idea/
+
+media/
 endpoint/__pycache__/
 endpoint/__init__.py
