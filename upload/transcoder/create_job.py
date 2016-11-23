@@ -1,9 +1,5 @@
 import random
 
-import boto.elastictranscoder
-
-import hashlib
-
 import boto3
 
 
