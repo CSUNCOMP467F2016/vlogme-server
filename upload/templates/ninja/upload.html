@@ -44,5 +44,38 @@
             <p><input type="submit" value="Upload" /></p>
 </form>
 
+<br><br><br>
+<p><b>Git handle:</b> <a href ="https://valeramaniuk@bitbucket.org/valeramaniuk/comp467_upload.git">https://valeramaniuk@bitbucket.org/valeramaniuk/comp467_upload.git</a></p>
+<p>http://ec2-35-164-213-202.us-west-2.compute.amazonaws.com/endpoint/get_responses_to_video/<b>{video_id}</b><br>
+    Returns all video responses to video with id == <b>{video_id}</b><br>
+    If this number is 1 then returns all "topic" videos<br>
+    Example : <a href ="http://ec2-35-164-213-202.us-west-2.compute.amazonaws.com/endpoint/get_responses_to_video/1">http://ec2-35-164-213-202.us-west-2.compute.amazonaws.com/endpoint/get_responses_to_video/1</a>
+</p>
+
+<p>http://ec2-35-164-213-202.us-west-2.compute.amazonaws.com/endpoint/by_author/<b>{username}</b><br>
+    Returns all videos posted by <b>{username}</b><br>
+    If this number is 1 then returns all "topic" videos<br>
+    Example : <a href ="http://ec2-35-164-213-202.us-west-2.compute.amazonaws.com/endpoint/by_author/valera">http://ec2-35-164-213-202.us-west-2.compute.amazonaws.com/endpoint/by_author/valera</a>
+</p>
+<div>
+
+pk\": 3, <b>i.e video_id </b>
+    <ul>
+   <li> \"fields\": {
+   <li> \"author\": \"jyelloz\",<b>i.e. username</b>
+    <li>\"title\": \"Funny video!\",
+    <li>\"filename\": \"https://s3-us-west-2.amazonaws.com/comp467lq/106jyelloz_1479938463.mp4_dash\",<b>URL of a compressed file</b>
+    <li>\"thumbnail\": \"https://s3-us-west-2.amazonaws.com/comp467thumbnails/106jyelloz_1479938463.mp4_dash_00001.png\", <b>URL of a thumbnail</b>
+    <li>\"playlist_file\": \"https://s3-us-west-2.amazonaws.com/comp467lq/106playlist_jyelloz_1479938463.mp4.mpd\", <b>URL a manifest file</b>
+    <li>\"response_to\": 1, <b>id of the parent video, if the id == 1 then there is no parent</b>
+    <li>\"playback_start_at\": 0, <b>time in sec when the playback should start, only relevant for response videos</b>
+    <li>\"length\": \"\", <b>length in seconds, optional</b>
+    <li>\"date_added\": \"2016-11-23T22:01:03.843Z\",
+    <li>\"original_filename\": \"https://s3-us-west-2.amazonaws.com/comp467originals/jyelloz_1479938463.mp4\" <b>URL of an original file</b>
+    </li>
+    </ul>
+        }}
+
+</div>
 
 {% endblock %}

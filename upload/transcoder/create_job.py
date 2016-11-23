@@ -42,6 +42,14 @@ def transcode_on_boto3(input_key):
             'ThumbnailPattern': output_key+'_{count}',
             'PresetId': preset_id,
             'SegmentDuration': '1',
+            'Composition': [
+                {
+                    'TimeSpan': {
+                        'StartTime': '00:00:00.000',
+                        'Duration': '00:00:59.000'
+                    }
+                },
+    ],
         },
 
         # OutputKeyPrefix=output_key_prefix,
@@ -55,6 +63,7 @@ def transcode_on_boto3(input_key):
                 ]
             },
         ],
+
     )
     print(response)
     return output_key, playlist_name+'.mpd', output_key+'_00001.png'
