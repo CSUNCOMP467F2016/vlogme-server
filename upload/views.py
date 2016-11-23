@@ -37,6 +37,10 @@ def index(request):
             thumbnail_bucket_url = 'https://s3-us-west-2.amazonaws.com/comp467thumbnails/'
 
             parent_video = VideoResponse.objects.get(id=request.POST.get('response_to'))
+            if request.POST.get('playback_starts_at'):
+                start_time = int(request.POST.get('playback_starts_at'))
+            else:
+                start_time =0
 
             metadata = VideoResponse(author=request.user,
                                      filename=transcoder_bucket_url+output_filename,
@@ -44,7 +48,7 @@ def index(request):
                                      thumbnail=thumbnail_bucket_url+thumbnail_name,
                                      original_filename =original_bucket_url+ filename,
                                      response_to = parent_video,
-                                     playback_start_at=request.POST.get('playback_starts_at'),
+                                     playback_start_at=start_time,
                                      title = request.POST.get('video_title'),
 
                                      )
