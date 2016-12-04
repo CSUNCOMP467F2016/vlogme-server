@@ -25,6 +25,20 @@ def get_responses_to_video(request, video_id):
     )
 
 
+def latest_topics(request):
+    return HttpResponse(
+        '[]',
+        content_type='application/json',
+    )
+
+
+def latest_responses(request):
+    return HttpResponse(
+        '[]',
+        content_type='application/json',
+    )
+
+
 def response_points(request, video_id):
 
     responses = VideoResponse.objects.filter(response_to__id=video_id)
