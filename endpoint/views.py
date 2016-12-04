@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.core import serializers
 
 from .models import VideoResponse
@@ -23,3 +23,14 @@ def get_responses_to_video(request, video_id):
         serializers.serialize('json', responses),
         content_type='application/json',
     )
+
+
+def response_points(request, video_id):
+
+    responses = VideoResponse.objects.filter(response_to__id=video_id)
+
+    points = [
+        r.playback_start_at for r in responses
+    ]
+
+    return JsonResponse(points, safe=False)
