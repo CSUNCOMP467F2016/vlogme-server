@@ -59,15 +59,33 @@ def get_responses_to_video(request, video_id):
 
 
 def latest_topics(request):
+
+    start, end = _get_pagination_range(request)
+
+    topics = VideoResponse.objects.filter(
+        response_to__isnull=True,
+    ).order_by(
+        '-date_added',
+    )[start:end]
+
     return HttpResponse(
-        '[]',
+        serializers.serialize('json', topics),
         content_type='application/json',
     )
 
 
 def latest_responses(request):
+
+    start, end = _get_pagination_range(request)
+
+    responses = VideoResponse.objects.filter(
+        response_to__isnull=False,
+    ).order_by(
+        '-date_added',
+    )[start:end]
+
     return HttpResponse(
-        '[]',
+        serializers.serialize('json', responses),
         content_type='application/json',
     )
 
