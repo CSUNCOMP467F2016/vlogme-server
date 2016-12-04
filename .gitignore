@@ -6,11 +6,5 @@ manage.py
 file_upload/settings.py
 file_upload/wsgi.py
 media/
-endpoint/__pycache__/
-endpoint/__init__.py
-upload/__pycache__/
-upload/transcoder/__pycache__/
-upload/sqs/__pycache__/
-upload/s3/__pycache__/
-file_upload/__pycache__/
+__pycache__/
 /remote_files
