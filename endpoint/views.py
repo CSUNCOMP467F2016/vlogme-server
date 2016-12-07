@@ -1,5 +1,6 @@
 from django.http import HttpResponse, JsonResponse
 from django.core import serializers
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import VideoResponse
 
@@ -89,6 +90,7 @@ def latest_responses(request):
     )
 
 
+@csrf_exempt
 def response_points(request, video_id):
 
     responses = VideoResponse.objects.filter(response_to__id=video_id)
