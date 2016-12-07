@@ -91,7 +91,9 @@ def latest_responses(request):
 
 def response_points(request, video_id):
 
-    responses = VideoResponse.objects.filter(response_to__id=video_id)
+    responses = VideoResponse.objects.filter(response_to__id=video_id).values(
+        'playback_start_at'
+    ).distinct()
 
     points = [
         r.playback_start_at for r in responses
