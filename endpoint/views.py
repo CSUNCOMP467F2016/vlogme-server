@@ -96,7 +96,7 @@ def response_points(request, video_id):
     ).distinct()
 
     points = [
-        r.playback_start_at for r in responses
+        r['playback_start_at'] for r in responses
     ]
 
     return JsonResponse(points, safe=False)
