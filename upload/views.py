@@ -35,8 +35,10 @@ def index(request):
             original_bucket_url ='https://s3-us-west-2.amazonaws.com/comp467originals/'
             transcoder_bucket_url = 'https://s3-us-west-2.amazonaws.com/comp467lq/'
             thumbnail_bucket_url = 'https://s3-us-west-2.amazonaws.com/comp467thumbnails/'
-
-            parent_video = VideoResponse.objects.get(id=request.POST.get('response_to'))
+            if request.POST.get('response_to') == "":
+                parent_video = None
+            else:
+                parent_video = VideoResponse.objects.get(id=request.POST.get('response_to'))
             if request.POST.get('playback_starts_at'):
                 start_time = int(request.POST.get('playback_starts_at'))
             else:
@@ -63,7 +65,7 @@ def index(request):
     # Load documents for the list page
     documents = ResponseFile.objects.all()
     users = User.objects.all()
-    all_topic_videos = VideoResponse.objects.filter(response_to__id=1)
+    all_topic_videos = VideoResponse.objects.filter(response_to__isnull=True)
     # Render list page with the documents and the form
     return render(request, "ninja/upload.html", {'documents': documents,
                                                  'users':users,

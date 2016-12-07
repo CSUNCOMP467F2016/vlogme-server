@@ -24,7 +24,7 @@
     <p>
     Response to:
     <select name="response_to">
-        <option value = 1 selected>NOT a RESPONSE</option>
+        <option value = "" selected>NOT a RESPONSE</option>
     {% for topic_video in all_topic_videos %}
         <option value="{{ topic_video.id }}">{{ topic_video.title }} </option>
     {% endfor %}
