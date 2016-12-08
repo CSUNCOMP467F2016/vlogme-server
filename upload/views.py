@@ -59,48 +59,13 @@ def handle_upload(request, user):
 
 
 @login_required
+@csrf_exempt
 def index(request):
     # Handle file upload
     if request.method == 'POST':
         form = VideoResponseForm(request.POST, request.FILES)
         if form.is_valid():
-            newdoc = ResponseFile(docfile = request.FILES['docfile'],
-                                  user_id=request.user.id)
-
-            newdoc.save()
-
-            # renames user_timestamp.ext and uploads to S3
-            bucket_name, filename = upload_original_to_s3(newdoc.docfile, request.user)
-            # sqs, dont do much yet
-            add_video_file_for_encoding(bucket_name, filename, request.user.username)
-            # instead, we create transcoder job here
-            output_filename, playlist_filename, thumbnail_name = transcode_on_boto3(filename)
-
-            original_bucket_url ='https://s3-us-west-2.amazonaws.com/comp467originals/'
-            transcoder_bucket_url = 'https://s3-us-west-2.amazonaws.com/comp467lq/'
-            thumbnail_bucket_url = 'https://s3-us-west-2.amazonaws.com/comp467thumbnails/'
-            if request.POST.get('response_to') == "":
-                parent_video = None
-            else:
-                parent_video = VideoResponse.objects.get(id=request.POST.get('response_to'))
-            if request.POST.get('playback_starts_at'):
-                start_time = int(request.POST.get('playback_starts_at'))
-            else:
-                start_time =0
-
-            metadata = VideoResponse(author=request.user,
-                                     filename=transcoder_bucket_url+output_filename,
-                                     playlist_file= transcoder_bucket_url + playlist_filename,
-                                     thumbnail=thumbnail_bucket_url+thumbnail_name,
-                                     original_filename =original_bucket_url+ filename,
-                                     response_to = parent_video,
-                                     playback_start_at=start_time,
-                                     title = request.POST.get('video_title'),
-
-                                     )
-            metadata.save()
-
-
+            handle_upload(request, request.user)
 
             return HttpResponseRedirect(reverse('index'))
     else:
