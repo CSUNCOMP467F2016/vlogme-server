@@ -59,7 +59,6 @@ def handle_upload(request, user):
 
 
 @login_required
-@csrf_exempt
 def index(request):
     # Handle file upload
     if request.method == 'POST':
