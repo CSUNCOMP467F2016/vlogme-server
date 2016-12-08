@@ -1,5 +1,3 @@
-import os
-
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
@@ -7,12 +5,58 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib import messages
 from .form import LoginForm, SignUpForm, VideoResponseForm
-from .models import User,ResponseFile
+from .models import User, ResponseFile
 
 from .s3.s3 import upload_original_to_s3
 from .sqs.add_to_sqs import add_video_file_for_encoding
-from .transcoder.create_job import  transcode_on_boto3
+from .transcoder.create_job import transcode_on_boto3
 from endpoint.models import VideoResponse
+
+
+def handle_upload(request, user):
+
+    newdoc = ResponseFile(
+        docfile=request.FILES['docfile'],
+        user_id=user.id,
+    )
+
+    newdoc.save()
+
+    # renames user_timestamp.ext and uploads to S3
+    bucket_name, filename = upload_original_to_s3(newdoc.docfile, user)
+    # sqs, dont do much yet
+    add_video_file_for_encoding(bucket_name, filename, user.username)
+    # instead, we create transcoder job here
+    output_filename, playlist_filename, thumbnail_name = transcode_on_boto3(filename)
+
+    original_bucket_url ='https://s3-us-west-2.amazonaws.com/comp467originals/'
+    transcoder_bucket_url = 'https://s3-us-west-2.amazonaws.com/comp467lq/'
+    thumbnail_bucket_url = 'https://s3-us-west-2.amazonaws.com/comp467thumbnails/'
+
+    response_to = request.POST.get('response_to') or ''
+    playback_starts_at = request.POST.get('playback_starts_at')
+    title = request.POST.get('video_title')
+
+    parent_video = (
+        None if len(response_to) < 1
+        else VideoResponse.objects.get(id=response_to)
+    )
+
+    start_time = int(playback_starts_at) if playback_starts_at else 0
+
+    metadata = VideoResponse(
+        author=user,
+        filename=transcoder_bucket_url + output_filename,
+        playlist_file=transcoder_bucket_url + playlist_filename,
+        thumbnail=thumbnail_bucket_url + thumbnail_name,
+        original_filename=original_bucket_url + filename,
+        response_to=parent_video,
+        playback_start_at=start_time,
+        title=title,
+    )
+
+    metadata.save()
+
 
 @login_required
 def index(request):
