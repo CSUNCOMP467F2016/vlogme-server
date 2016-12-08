@@ -7,4 +7,4 @@ file_upload/settings.py
 file_upload/wsgi.py
 media/
 __pycache__/
-/remote_files
+
