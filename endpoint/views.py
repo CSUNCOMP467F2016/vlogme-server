@@ -102,3 +102,10 @@ def response_points(request, video_id):
     ]
 
     return JsonResponse(points, safe=False)
+
+
+def video(request, video_id):
+
+    video = VideoResponse.objects.filter(id=video_id).values().get()
+
+    return JsonResponse(video, safe=False)
