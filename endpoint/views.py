@@ -1,6 +1,4 @@
-from django.http import HttpResponse, JsonResponse
-from django.core import serializers
-from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 
 from .models import VideoResponse
 from upload import views as upload_views
@@ -42,22 +40,16 @@ def _get_pagination_range(request, prefix=''):
 
 def get_videos_by_user(request, username):
 
-    video_objects = VideoResponse.objects.filter(author=username)
+    video_objects = VideoResponse.objects.filter(author=username).values()
 
-    return HttpResponse(
-        serializers.serialize('json', video_objects),
-        content_type='application/json',
-    )
+    return JsonResponse(list(video_objects), safe=False)
 
 
 def get_responses_to_video(request, video_id):
 
-    responses = VideoResponse.objects.filter(response_to__id=video_id)
+    responses = VideoResponse.objects.filter(response_to__id=video_id).values()
 
-    return HttpResponse(
-        serializers.serialize('json', responses),
-        content_type='application/json',
-    )
+    return JsonResponse(list(responses), safe=False)
 
 
 def latest_topics(request):
@@ -68,12 +60,9 @@ def latest_topics(request):
         response_to__isnull=True,
     ).order_by(
         '-date_added',
-    )[start:end]
+    ).values()[start:end]
 
-    return HttpResponse(
-        serializers.serialize('json', topics),
-        content_type='application/json',
-    )
+    return JsonResponse(list(topics), safe=False)
 
 
 def latest_responses(request):
@@ -84,15 +73,11 @@ def latest_responses(request):
         response_to__isnull=False,
     ).order_by(
         '-date_added',
-    )[start:end]
+    ).values()[start:end]
 
-    return HttpResponse(
-        serializers.serialize('json', responses),
-        content_type='application/json',
-    )
+    return JsonResponse(list(responses), safe=False)
 
 
-@csrf_exempt
 def response_points(request, video_id):
 
     responses = VideoResponse.objects.filter(response_to__id=video_id).values(
