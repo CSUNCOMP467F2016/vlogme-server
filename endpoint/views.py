@@ -92,6 +92,22 @@ def response_points(request, video_id):
     return JsonResponse(points, safe=False)
 
 
+def response_point_detail(request, video_id, point):
+
+    responses = VideoResponse.objects.filter(
+        response_to__id=video_id,
+        playback_start_at=point,
+    ).values(
+        'id',
+        'title',
+        'filename',
+        'thumbnail',
+        'author',
+    )
+
+    return JsonResponse(list(responses), safe=False)
+
+
 @csrf_exempt
 def upload_video(request):
     user = User.objects.all()[0]

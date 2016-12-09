@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'latest-topics', v.latest_topics, name='latest_topics'),
     url(r'latest-responses', v.latest_responses, name='latest_responses'),
     url(r'response-points/(?P<video_id>[0-9]*)', v.response_points, name='response_points'),
+    url(r'response/(?P<video_id>[0-9]*)/(?P<point>[0-9]*)', v.response_point_detail, name='response_point_detail'),
     url(r'video/(?P<video_id>[0-9]*)', v.video, name='video'),
     url(r'upload-video', v.upload_video, name='video'),
 ]
