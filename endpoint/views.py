@@ -1,5 +1,6 @@
 from django.http import JsonResponse
 
+from django.views.decorators.csrf import csrf_exempt
 from .models import VideoResponse
 from upload import views as upload_views
 from upload.models import User
@@ -91,6 +92,7 @@ def response_points(request, video_id):
     return JsonResponse(points, safe=False)
 
 
+@csrf_exempt
 def upload_video(request):
     user = User.objects.all()[0]
     upload_views.handle_upload(request, user)
