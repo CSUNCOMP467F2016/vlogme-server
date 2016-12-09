@@ -91,7 +91,6 @@ def response_points(request, video_id):
     return JsonResponse(points, safe=False)
 
 
-@csrf_exempt
 def upload_video(request):
     user = User.objects.all()[0]
     upload_views.handle_upload(request, user)
